@@ -1,6 +1,6 @@
-# Express Basic Dynamic Content Server
+# Express/Handlebars Dynamic Content Server
 
-This repo contains a basic Express-based server in `server.js` that demonstrates how dynamic content can be served with Express.  Before doing anything with it you need to install dependencies:
+This repo contains a basic Express-based server in `server.js` that uses Handlebars to render dynamic content.  Before doing anything with it you need to install dependencies:
 ```
 npm install
 ```
