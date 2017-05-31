@@ -5,11 +5,8 @@ var peopleData = require('./peopleData');
 var app = express();
 var port = process.env.PORT || 3000;
 
-// var prePeopleContent = fs.readFileSync('./templates/prePeopleContent.template', 'utf8');
-// var postPeopleContent = fs.readFileSync('./templates/postPeopleContent.template', 'utf8');
 var peoplePageTemplate = fs.readFileSync('./templates/peoplePage.template', 'utf8');
 var personCardTemplate = fs.readFileSync('./templates/personCard.template', 'utf8');
-
 
 app.get('/people', function (req, res, next) {
 
@@ -18,10 +15,6 @@ app.get('/people', function (req, res, next) {
     var personData = peopleData[person];
     var personCardContent = personCardTemplate.replace(new RegExp("{{url}}"), "/people/" + person)
       .replace(new RegExp("{{name}}"), personData.name);
-
-    // var personCardContent = '<div class="person-card">';
-    // personCardContent += '<a href="/people/' + person + '">' + personData.name + '</a>'
-    // personCardContent += '</div>';
 
     peopleContent += personCardContent;
   });
