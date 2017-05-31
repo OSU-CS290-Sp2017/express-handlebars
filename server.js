@@ -1,6 +1,8 @@
 var path = require('path');
 var fs = require('fs');
 var express = require('express');
+var exphbs = require('express-handlebars');
+
 var peopleData = require('./peopleData');
 var app = express();
 var port = process.env.PORT || 3000;
@@ -8,18 +10,17 @@ var port = process.env.PORT || 3000;
 var peoplePageTemplate = fs.readFileSync('./templates/peoplePage.template', 'utf8');
 var personCardTemplate = fs.readFileSync('./templates/personCard.template', 'utf8');
 
+app.engine('handlebars', exphbs());
+app.set('view engine', 'handlebars');
+
 app.get('/people', function (req, res, next) {
 
-  var peopleContent = '';
-  Object.keys(peopleData).forEach(function (person) {
-    var personData = peopleData[person];
-    var personCardContent = personCardTemplate.replace(new RegExp("{{url}}"), "/people/" + person)
-      .replace(new RegExp("{{name}}"), personData.name);
+  var templateArgs = {
+    people: peopleData
+  };
 
-    peopleContent += personCardContent;
-  });
+  res.render('peoplePage', templateArgs);
 
-  res.status(200).send(peoplePageTemplate.replace(new RegExp("{{people}}"), peopleContent));
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
