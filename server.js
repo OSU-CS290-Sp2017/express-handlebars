@@ -7,20 +7,34 @@ var peopleData = require('./peopleData');
 var app = express();
 var port = process.env.PORT || 3000;
 
-var peoplePageTemplate = fs.readFileSync('./templates/peoplePage.template', 'utf8');
-var personCardTemplate = fs.readFileSync('./templates/personCard.template', 'utf8');
-
-app.engine('handlebars', exphbs());
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
 app.get('/people', function (req, res, next) {
 
   var templateArgs = {
-    people: peopleData
+    people: peopleData,
+    title: "Photos of People"
   };
 
   res.render('peoplePage', templateArgs);
 
+});
+
+app.get('/people/:person', function (req, res, next) {
+  console.log("== url params for request:", req.params);
+  var person = req.params.person;
+  var personData = peopleData[person];
+  if (personData) {
+    var templateArgs = {
+      photos: personData.photos,
+      name: personData.name,
+      title: "Photos of People - " + personData.name
+    }
+    res.render('photosPage', templateArgs);
+  } else {
+    next();
+  }
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
